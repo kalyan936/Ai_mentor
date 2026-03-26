@@ -1,0 +1,828 @@
+============================= test session starts =============================
+platform win32 -- Python 3.11.8, pytest-9.0.2, pluggy-1.6.0 -- C:\Users\peepl\AppData\Local\Programs\Python\Python311\python.exe
+cachedir: .pytest_cache
+rootdir: D:\learning\learn\ai-mentor
+plugins: anyio-4.12.0, langsmith-0.7.17, asyncio-1.3.0
+asyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function
+collecting ... collected 8 items
+
+tests/test_api.py::test_health_check PASSED                              [ 12%]
+tests/test_api.py::test_api_health PASSED                                [ 25%]
+tests/test_api.py::test_register_user FAILED                             [ 37%]
+tests/test_api.py::test_login_user FAILED                                [ 50%]
+tests/test_api.py::test_get_curriculum FAILED                            [ 62%]
+tests/test_api.py::test_onboard_user FAILED                              [ 75%]
+tests/test_api.py::test_dashboard FAILED                                 [ 87%]
+tests/test_api.py::test_progress_update FAILED                           [100%]
+
+================================== FAILURES ===================================
+_____________________________ test_register_user ______________________________
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\sqlalchemy\engine\base.py:1967: in _exec_single_context
+    self.dialect.do_execute(
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\sqlalchemy\engine\default.py:952: in do_execute
+    cursor.execute(statement, parameters)
+E   sqlite3.OperationalError: no such table: users
+
+The above exception was the direct cause of the following exception:
+tests\test_api.py:35: in test_register_user
+    response = client.post("/api/users/register", json={
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\starlette\testclient.py:546: in post
+    return super().post(
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\httpx\_client.py:1144: in post
+    return self.request(
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\starlette\testclient.py:445: in request
+    return super().request(
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\httpx\_client.py:825: in request
+    return self.send(request, auth=auth, follow_redirects=follow_redirects)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\httpx\_client.py:914: in send
+    response = self._send_handling_auth(
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\httpx\_client.py:942: in _send_handling_auth
+    response = self._send_handling_redirects(
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\httpx\_client.py:979: in _send_handling_redirects
+    response = self._send_single_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\httpx\_client.py:1014: in _send_single_request
+    response = transport.handle_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\starlette\testclient.py:348: in handle_request
+    raise exc
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\starlette\testclient.py:345: in handle_request
+    portal.call(self.app, scope, receive, send)
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\anyio\from_thread.py:326: in call
+    return cast(T_Retval, self.start_task_soon(func, *args).result())
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\concurrent\futures\_base.py:456: in result
+    return self.__get_result()
+           ^^^^^^^^^^^^^^^^^^^
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\concurrent\futures\_base.py:401: in __get_result
+    raise self._exception
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\anyio\from_thread.py:257: in _call_func
+    retval = await retval_or_awaitable
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\fastapi\applications.py:1139: in __call__
+    await super().__call__(scope, receive, send)
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\starlette\applications.py:107: in __call__
+    await self.middleware_stack(scope, receive, send)
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\starlette\middleware\errors.py:186: in __call__
+    raise exc
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\starlette\middleware\errors.py:164: in __call__
+    await self.app(scope, receive, _send)
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\starlette\middleware\cors.py:85: in __call__
+    await self.app(scope, receive, send)
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\starlette\middleware\exceptions.py:63: in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\starlette\_exception_handler.py:53: in wrapped_app
+    raise exc
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\starlette\_exception_handler.py:42: in wrapped_app
+    await app(scope, receive, sender)
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\fastapi\middleware\asyncexitstack.py:18: in __call__
+    await self.app(scope, receive, send)
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\starlette\routing.py:716: in __call__
+    await self.middleware_stack(scope, receive, send)
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\starlette\routing.py:736: in app
+    await route.handle(scope, receive, send)
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\starlette\routing.py:290: in handle
+    await self.app(scope, receive, send)
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\fastapi\routing.py:120: in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\starlette\_exception_handler.py:53: in wrapped_app
+    raise exc
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\starlette\_exception_handler.py:42: in wrapped_app
+    await app(scope, receive, sender)
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\fastapi\routing.py:106: in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\fastapi\routing.py:430: in app
+    raw_response = await run_endpoint_function(
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\fastapi\routing.py:318: in run_endpoint_function
+    return await run_in_threadpool(dependant.call, **values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\starlette\concurrency.py:32: in run_in_threadpool
+    return await anyio.to_thread.run_sync(func)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\anyio\to_thread.py:61: in run_sync
+    return await get_async_backend().run_sync_in_worker_thread(
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\anyio\_backends\_asyncio.py:2525: in run_sync_in_worker_thread
+    return await future
+           ^^^^^^^^^^^^
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\anyio\_backends\_asyncio.py:986: in run
+    result = context.run(func, *args)
+             ^^^^^^^^^^^^^^^^^^^^^^^^
+backend\app\api\routes\users.py:20: in register_user
+    existing = user_service.get_user_by_email(db, user_data.email)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+backend\app\services\user_service.py:41: in get_user_by_email
+    return db.query(User).filter(User.email == email).first()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\sqlalchemy\orm\query.py:2759: in first
+    return self.limit(1)._iter().first()  # type: ignore
+           ^^^^^^^^^^^^^^^^^^^^^
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\sqlalchemy\orm\query.py:2857: in _iter
+    result: Union[ScalarResult[_T], Result[_T]] = self.session.execute(
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\sqlalchemy\orm\session.py:2351: in execute
+    return self._execute_internal(
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\sqlalchemy\orm\session.py:2249: in _execute_internal
+    result: Result[Any] = compile_state_cls.orm_execute_statement(
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\sqlalchemy\orm\context.py:306: in orm_execute_statement
+    result = conn.execute(
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\sqlalchemy\engine\base.py:1419: in execute
+    return meth(
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\sqlalchemy\sql\elements.py:527: in _execute_on_connection
+    return connection._execute_clauseelement(
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\sqlalchemy\engine\base.py:1641: in _execute_clauseelement
+    ret = self._execute_context(
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\sqlalchemy\engine\base.py:1846: in _execute_context
+    return self._exec_single_context(
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\sqlalchemy\engine\base.py:1986: in _exec_single_context
+    self._handle_dbapi_exception(
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\sqlalchemy\engine\base.py:2363: in _handle_dbapi_exception
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\sqlalchemy\engine\base.py:1967: in _exec_single_context
+    self.dialect.do_execute(
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\sqlalchemy\engine\default.py:952: in do_execute
+    cursor.execute(statement, parameters)
+E   sqlalchemy.exc.OperationalError: (sqlite3.OperationalError) no such table: users
+E   [SQL: SELECT users.id AS users_id, users.name AS users_name, users.email AS users_email, users.password_hash AS users_password_hash, users.goals AS users_goals, users.learning_level AS users_learning_level, users.preferred_topics AS users_preferred_topics, users.daily_study_time AS users_daily_study_time, users.preferred_style AS users_preferred_style, users.career_goal AS users_career_goal, users.streak_days AS users_streak_days, users.total_study_minutes AS users_total_study_minutes, users.last_active AS users_last_active, users.created_at AS users_created_at, users.updated_at AS users_updated_at 
+E   FROM users 
+E   WHERE users.email = ?
+E    LIMIT ? OFFSET ?]
+E   [parameters: ('test@example.com', 1, 0)]
+E   (Background on this error at: https://sqlalche.me/e/20/e3q8)
+---------------------------- Captured stdout call -----------------------------
+2026-03-26 14:20:46,534 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-03-26 14:20:46,541 INFO sqlalchemy.engine.Engine SELECT users.id AS users_id, users.name AS users_name, users.email AS users_email, users.password_hash AS users_password_hash, users.goals AS users_goals, users.learning_level AS users_learning_level, users.preferred_topics AS users_preferred_topics, users.daily_study_time AS users_daily_study_time, users.preferred_style AS users_preferred_style, users.career_goal AS users_career_goal, users.streak_days AS users_streak_days, users.total_study_minutes AS users_total_study_minutes, users.last_active AS users_last_active, users.created_at AS users_created_at, users.updated_at AS users_updated_at 
+FROM users 
+WHERE users.email = ?
+ LIMIT ? OFFSET ?
+2026-03-26 14:20:46,542 INFO sqlalchemy.engine.Engine [generated in 0.00062s] ('test@example.com', 1, 0)
+2026-03-26 14:20:46,545 INFO sqlalchemy.engine.Engine ROLLBACK
+------------------------------ Captured log call ------------------------------
+INFO     sqlalchemy.engine.Engine:base.py:2710 BEGIN (implicit)
+INFO     sqlalchemy.engine.Engine:base.py:1846 SELECT users.id AS users_id, users.name AS users_name, users.email AS users_email, users.password_hash AS users_password_hash, users.goals AS users_goals, users.learning_level AS users_learning_level, users.preferred_topics AS users_preferred_topics, users.daily_study_time AS users_daily_study_time, users.preferred_style AS users_preferred_style, users.career_goal AS users_career_goal, users.streak_days AS users_streak_days, users.total_study_minutes AS users_total_study_minutes, users.last_active AS users_last_active, users.created_at AS users_created_at, users.updated_at AS users_updated_at 
+FROM users 
+WHERE users.email = ?
+ LIMIT ? OFFSET ?
+INFO     sqlalchemy.engine.Engine:base.py:1846 [generated in 0.00062s] ('test@example.com', 1, 0)
+INFO     sqlalchemy.engine.Engine:base.py:2713 ROLLBACK
+_______________________________ test_login_user _______________________________
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\sqlalchemy\engine\base.py:1967: in _exec_single_context
+    self.dialect.do_execute(
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\sqlalchemy\engine\default.py:952: in do_execute
+    cursor.execute(statement, parameters)
+E   sqlite3.OperationalError: no such table: users
+
+The above exception was the direct cause of the following exception:
+tests\test_api.py:51: in test_login_user
+    client.post("/api/users/register", json={
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\starlette\testclient.py:546: in post
+    return super().post(
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\httpx\_client.py:1144: in post
+    return self.request(
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\starlette\testclient.py:445: in request
+    return super().request(
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\httpx\_client.py:825: in request
+    return self.send(request, auth=auth, follow_redirects=follow_redirects)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\httpx\_client.py:914: in send
+    response = self._send_handling_auth(
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\httpx\_client.py:942: in _send_handling_auth
+    response = self._send_handling_redirects(
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\httpx\_client.py:979: in _send_handling_redirects
+    response = self._send_single_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\httpx\_client.py:1014: in _send_single_request
+    response = transport.handle_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\starlette\testclient.py:348: in handle_request
+    raise exc
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\starlette\testclient.py:345: in handle_request
+    portal.call(self.app, scope, receive, send)
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\anyio\from_thread.py:326: in call
+    return cast(T_Retval, self.start_task_soon(func, *args).result())
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\concurrent\futures\_base.py:456: in result
+    return self.__get_result()
+           ^^^^^^^^^^^^^^^^^^^
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\concurrent\futures\_base.py:401: in __get_result
+    raise self._exception
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\anyio\from_thread.py:257: in _call_func
+    retval = await retval_or_awaitable
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\fastapi\applications.py:1139: in __call__
+    await super().__call__(scope, receive, send)
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\starlette\applications.py:107: in __call__
+    await self.middleware_stack(scope, receive, send)
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\starlette\middleware\errors.py:186: in __call__
+    raise exc
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\starlette\middleware\errors.py:164: in __call__
+    await self.app(scope, receive, _send)
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\starlette\middleware\cors.py:85: in __call__
+    await self.app(scope, receive, send)
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\starlette\middleware\exceptions.py:63: in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\starlette\_exception_handler.py:53: in wrapped_app
+    raise exc
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\starlette\_exception_handler.py:42: in wrapped_app
+    await app(scope, receive, sender)
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\fastapi\middleware\asyncexitstack.py:18: in __call__
+    await self.app(scope, receive, send)
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\starlette\routing.py:716: in __call__
+    await self.middleware_stack(scope, receive, send)
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\starlette\routing.py:736: in app
+    await route.handle(scope, receive, send)
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\starlette\routing.py:290: in handle
+    await self.app(scope, receive, send)
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\fastapi\routing.py:120: in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\starlette\_exception_handler.py:53: in wrapped_app
+    raise exc
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\starlette\_exception_handler.py:42: in wrapped_app
+    await app(scope, receive, sender)
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\fastapi\routing.py:106: in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\fastapi\routing.py:430: in app
+    raw_response = await run_endpoint_function(
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\fastapi\routing.py:318: in run_endpoint_function
+    return await run_in_threadpool(dependant.call, **values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\starlette\concurrency.py:32: in run_in_threadpool
+    return await anyio.to_thread.run_sync(func)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\anyio\to_thread.py:61: in run_sync
+    return await get_async_backend().run_sync_in_worker_thread(
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\anyio\_backends\_asyncio.py:2525: in run_sync_in_worker_thread
+    return await future
+           ^^^^^^^^^^^^
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\anyio\_backends\_asyncio.py:986: in run
+    result = context.run(func, *args)
+             ^^^^^^^^^^^^^^^^^^^^^^^^
+backend\app\api\routes\users.py:20: in register_user
+    existing = user_service.get_user_by_email(db, user_data.email)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+backend\app\services\user_service.py:41: in get_user_by_email
+    return db.query(User).filter(User.email == email).first()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\sqlalchemy\orm\query.py:2759: in first
+    return self.limit(1)._iter().first()  # type: ignore
+           ^^^^^^^^^^^^^^^^^^^^^
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\sqlalchemy\orm\query.py:2857: in _iter
+    result: Union[ScalarResult[_T], Result[_T]] = self.session.execute(
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\sqlalchemy\orm\session.py:2351: in execute
+    return self._execute_internal(
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\sqlalchemy\orm\session.py:2249: in _execute_internal
+    result: Result[Any] = compile_state_cls.orm_execute_statement(
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\sqlalchemy\orm\context.py:306: in orm_execute_statement
+    result = conn.execute(
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\sqlalchemy\engine\base.py:1419: in execute
+    return meth(
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\sqlalchemy\sql\elements.py:527: in _execute_on_connection
+    return connection._execute_clauseelement(
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\sqlalchemy\engine\base.py:1641: in _execute_clauseelement
+    ret = self._execute_context(
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\sqlalchemy\engine\base.py:1846: in _execute_context
+    return self._exec_single_context(
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\sqlalchemy\engine\base.py:1986: in _exec_single_context
+    self._handle_dbapi_exception(
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\sqlalchemy\engine\base.py:2363: in _handle_dbapi_exception
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\sqlalchemy\engine\base.py:1967: in _exec_single_context
+    self.dialect.do_execute(
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\sqlalchemy\engine\default.py:952: in do_execute
+    cursor.execute(statement, parameters)
+E   sqlalchemy.exc.OperationalError: (sqlite3.OperationalError) no such table: users
+E   [SQL: SELECT users.id AS users_id, users.name AS users_name, users.email AS users_email, users.password_hash AS users_password_hash, users.goals AS users_goals, users.learning_level AS users_learning_level, users.preferred_topics AS users_preferred_topics, users.daily_study_time AS users_daily_study_time, users.preferred_style AS users_preferred_style, users.career_goal AS users_career_goal, users.streak_days AS users_streak_days, users.total_study_minutes AS users_total_study_minutes, users.last_active AS users_last_active, users.created_at AS users_created_at, users.updated_at AS users_updated_at 
+E   FROM users 
+E   WHERE users.email = ?
+E    LIMIT ? OFFSET ?]
+E   [parameters: ('login@test.com', 1, 0)]
+E   (Background on this error at: https://sqlalche.me/e/20/e3q8)
+---------------------------- Captured stdout call -----------------------------
+2026-03-26 14:20:48,014 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-03-26 14:20:48,015 INFO sqlalchemy.engine.Engine SELECT users.id AS users_id, users.name AS users_name, users.email AS users_email, users.password_hash AS users_password_hash, users.goals AS users_goals, users.learning_level AS users_learning_level, users.preferred_topics AS users_preferred_topics, users.daily_study_time AS users_daily_study_time, users.preferred_style AS users_preferred_style, users.career_goal AS users_career_goal, users.streak_days AS users_streak_days, users.total_study_minutes AS users_total_study_minutes, users.last_active AS users_last_active, users.created_at AS users_created_at, users.updated_at AS users_updated_at 
+FROM users 
+WHERE users.email = ?
+ LIMIT ? OFFSET ?
+2026-03-26 14:20:48,015 INFO sqlalchemy.engine.Engine [cached since 1.474s ago] ('login@test.com', 1, 0)
+2026-03-26 14:20:48,016 INFO sqlalchemy.engine.Engine ROLLBACK
+------------------------------ Captured log call ------------------------------
+INFO     sqlalchemy.engine.Engine:base.py:2710 BEGIN (implicit)
+INFO     sqlalchemy.engine.Engine:base.py:1846 SELECT users.id AS users_id, users.name AS users_name, users.email AS users_email, users.password_hash AS users_password_hash, users.goals AS users_goals, users.learning_level AS users_learning_level, users.preferred_topics AS users_preferred_topics, users.daily_study_time AS users_daily_study_time, users.preferred_style AS users_preferred_style, users.career_goal AS users_career_goal, users.streak_days AS users_streak_days, users.total_study_minutes AS users_total_study_minutes, users.last_active AS users_last_active, users.created_at AS users_created_at, users.updated_at AS users_updated_at 
+FROM users 
+WHERE users.email = ?
+ LIMIT ? OFFSET ?
+INFO     sqlalchemy.engine.Engine:base.py:1846 [cached since 1.474s ago] ('login@test.com', 1, 0)
+INFO     sqlalchemy.engine.Engine:base.py:2713 ROLLBACK
+_____________________________ test_get_curriculum _____________________________
+tests\test_api.py:67: in test_get_curriculum
+    assert response.status_code == 200
+E   assert 422 == 200
+E    +  where 422 = <Response [422 Unprocessable Entity]>.status_code
+______________________________ test_onboard_user ______________________________
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\sqlalchemy\engine\base.py:1967: in _exec_single_context
+    self.dialect.do_execute(
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\sqlalchemy\engine\default.py:952: in do_execute
+    cursor.execute(statement, parameters)
+E   sqlite3.OperationalError: no such table: users
+
+The above exception was the direct cause of the following exception:
+tests\test_api.py:77: in test_onboard_user
+    reg = client.post("/api/users/register", json={
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\starlette\testclient.py:546: in post
+    return super().post(
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\httpx\_client.py:1144: in post
+    return self.request(
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\starlette\testclient.py:445: in request
+    return super().request(
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\httpx\_client.py:825: in request
+    return self.send(request, auth=auth, follow_redirects=follow_redirects)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\httpx\_client.py:914: in send
+    response = self._send_handling_auth(
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\httpx\_client.py:942: in _send_handling_auth
+    response = self._send_handling_redirects(
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\httpx\_client.py:979: in _send_handling_redirects
+    response = self._send_single_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\httpx\_client.py:1014: in _send_single_request
+    response = transport.handle_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\starlette\testclient.py:348: in handle_request
+    raise exc
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\starlette\testclient.py:345: in handle_request
+    portal.call(self.app, scope, receive, send)
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\anyio\from_thread.py:326: in call
+    return cast(T_Retval, self.start_task_soon(func, *args).result())
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\concurrent\futures\_base.py:456: in result
+    return self.__get_result()
+           ^^^^^^^^^^^^^^^^^^^
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\concurrent\futures\_base.py:401: in __get_result
+    raise self._exception
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\anyio\from_thread.py:257: in _call_func
+    retval = await retval_or_awaitable
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\fastapi\applications.py:1139: in __call__
+    await super().__call__(scope, receive, send)
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\starlette\applications.py:107: in __call__
+    await self.middleware_stack(scope, receive, send)
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\starlette\middleware\errors.py:186: in __call__
+    raise exc
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\starlette\middleware\errors.py:164: in __call__
+    await self.app(scope, receive, _send)
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\starlette\middleware\cors.py:85: in __call__
+    await self.app(scope, receive, send)
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\starlette\middleware\exceptions.py:63: in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\starlette\_exception_handler.py:53: in wrapped_app
+    raise exc
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\starlette\_exception_handler.py:42: in wrapped_app
+    await app(scope, receive, sender)
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\fastapi\middleware\asyncexitstack.py:18: in __call__
+    await self.app(scope, receive, send)
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\starlette\routing.py:716: in __call__
+    await self.middleware_stack(scope, receive, send)
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\starlette\routing.py:736: in app
+    await route.handle(scope, receive, send)
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\starlette\routing.py:290: in handle
+    await self.app(scope, receive, send)
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\fastapi\routing.py:120: in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\starlette\_exception_handler.py:53: in wrapped_app
+    raise exc
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\starlette\_exception_handler.py:42: in wrapped_app
+    await app(scope, receive, sender)
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\fastapi\routing.py:106: in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\fastapi\routing.py:430: in app
+    raw_response = await run_endpoint_function(
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\fastapi\routing.py:318: in run_endpoint_function
+    return await run_in_threadpool(dependant.call, **values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\starlette\concurrency.py:32: in run_in_threadpool
+    return await anyio.to_thread.run_sync(func)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\anyio\to_thread.py:61: in run_sync
+    return await get_async_backend().run_sync_in_worker_thread(
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\anyio\_backends\_asyncio.py:2525: in run_sync_in_worker_thread
+    return await future
+           ^^^^^^^^^^^^
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\anyio\_backends\_asyncio.py:986: in run
+    result = context.run(func, *args)
+             ^^^^^^^^^^^^^^^^^^^^^^^^
+backend\app\api\routes\users.py:20: in register_user
+    existing = user_service.get_user_by_email(db, user_data.email)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+backend\app\services\user_service.py:41: in get_user_by_email
+    return db.query(User).filter(User.email == email).first()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\sqlalchemy\orm\query.py:2759: in first
+    return self.limit(1)._iter().first()  # type: ignore
+           ^^^^^^^^^^^^^^^^^^^^^
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\sqlalchemy\orm\query.py:2857: in _iter
+    result: Union[ScalarResult[_T], Result[_T]] = self.session.execute(
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\sqlalchemy\orm\session.py:2351: in execute
+    return self._execute_internal(
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\sqlalchemy\orm\session.py:2249: in _execute_internal
+    result: Result[Any] = compile_state_cls.orm_execute_statement(
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\sqlalchemy\orm\context.py:306: in orm_execute_statement
+    result = conn.execute(
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\sqlalchemy\engine\base.py:1419: in execute
+    return meth(
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\sqlalchemy\sql\elements.py:527: in _execute_on_connection
+    return connection._execute_clauseelement(
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\sqlalchemy\engine\base.py:1641: in _execute_clauseelement
+    ret = self._execute_context(
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\sqlalchemy\engine\base.py:1846: in _execute_context
+    return self._exec_single_context(
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\sqlalchemy\engine\base.py:1986: in _exec_single_context
+    self._handle_dbapi_exception(
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\sqlalchemy\engine\base.py:2363: in _handle_dbapi_exception
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\sqlalchemy\engine\base.py:1967: in _exec_single_context
+    self.dialect.do_execute(
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\sqlalchemy\engine\default.py:952: in do_execute
+    cursor.execute(statement, parameters)
+E   sqlalchemy.exc.OperationalError: (sqlite3.OperationalError) no such table: users
+E   [SQL: SELECT users.id AS users_id, users.name AS users_name, users.email AS users_email, users.password_hash AS users_password_hash, users.goals AS users_goals, users.learning_level AS users_learning_level, users.preferred_topics AS users_preferred_topics, users.daily_study_time AS users_daily_study_time, users.preferred_style AS users_preferred_style, users.career_goal AS users_career_goal, users.streak_days AS users_streak_days, users.total_study_minutes AS users_total_study_minutes, users.last_active AS users_last_active, users.created_at AS users_created_at, users.updated_at AS users_updated_at 
+E   FROM users 
+E   WHERE users.email = ?
+E    LIMIT ? OFFSET ?]
+E   [parameters: ('onboard@test.com', 1, 0)]
+E   (Background on this error at: https://sqlalche.me/e/20/e3q8)
+---------------------------- Captured stdout call -----------------------------
+2026-03-26 14:20:49,391 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-03-26 14:20:49,391 INFO sqlalchemy.engine.Engine SELECT users.id AS users_id, users.name AS users_name, users.email AS users_email, users.password_hash AS users_password_hash, users.goals AS users_goals, users.learning_level AS users_learning_level, users.preferred_topics AS users_preferred_topics, users.daily_study_time AS users_daily_study_time, users.preferred_style AS users_preferred_style, users.career_goal AS users_career_goal, users.streak_days AS users_streak_days, users.total_study_minutes AS users_total_study_minutes, users.last_active AS users_last_active, users.created_at AS users_created_at, users.updated_at AS users_updated_at 
+FROM users 
+WHERE users.email = ?
+ LIMIT ? OFFSET ?
+2026-03-26 14:20:49,392 INFO sqlalchemy.engine.Engine [cached since 2.85s ago] ('onboard@test.com', 1, 0)
+2026-03-26 14:20:49,392 INFO sqlalchemy.engine.Engine ROLLBACK
+------------------------------ Captured log call ------------------------------
+INFO     sqlalchemy.engine.Engine:base.py:2710 BEGIN (implicit)
+INFO     sqlalchemy.engine.Engine:base.py:1846 SELECT users.id AS users_id, users.name AS users_name, users.email AS users_email, users.password_hash AS users_password_hash, users.goals AS users_goals, users.learning_level AS users_learning_level, users.preferred_topics AS users_preferred_topics, users.daily_study_time AS users_daily_study_time, users.preferred_style AS users_preferred_style, users.career_goal AS users_career_goal, users.streak_days AS users_streak_days, users.total_study_minutes AS users_total_study_minutes, users.last_active AS users_last_active, users.created_at AS users_created_at, users.updated_at AS users_updated_at 
+FROM users 
+WHERE users.email = ?
+ LIMIT ? OFFSET ?
+INFO     sqlalchemy.engine.Engine:base.py:1846 [cached since 2.85s ago] ('onboard@test.com', 1, 0)
+INFO     sqlalchemy.engine.Engine:base.py:2713 ROLLBACK
+_______________________________ test_dashboard ________________________________
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\sqlalchemy\engine\base.py:1967: in _exec_single_context
+    self.dialect.do_execute(
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\sqlalchemy\engine\default.py:952: in do_execute
+    cursor.execute(statement, parameters)
+E   sqlite3.OperationalError: no such table: users
+
+The above exception was the direct cause of the following exception:
+tests\test_api.py:98: in test_dashboard
+    reg = client.post("/api/users/register", json={
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\starlette\testclient.py:546: in post
+    return super().post(
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\httpx\_client.py:1144: in post
+    return self.request(
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\starlette\testclient.py:445: in request
+    return super().request(
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\httpx\_client.py:825: in request
+    return self.send(request, auth=auth, follow_redirects=follow_redirects)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\httpx\_client.py:914: in send
+    response = self._send_handling_auth(
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\httpx\_client.py:942: in _send_handling_auth
+    response = self._send_handling_redirects(
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\httpx\_client.py:979: in _send_handling_redirects
+    response = self._send_single_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\httpx\_client.py:1014: in _send_single_request
+    response = transport.handle_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\starlette\testclient.py:348: in handle_request
+    raise exc
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\starlette\testclient.py:345: in handle_request
+    portal.call(self.app, scope, receive, send)
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\anyio\from_thread.py:326: in call
+    return cast(T_Retval, self.start_task_soon(func, *args).result())
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\concurrent\futures\_base.py:456: in result
+    return self.__get_result()
+           ^^^^^^^^^^^^^^^^^^^
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\concurrent\futures\_base.py:401: in __get_result
+    raise self._exception
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\anyio\from_thread.py:257: in _call_func
+    retval = await retval_or_awaitable
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\fastapi\applications.py:1139: in __call__
+    await super().__call__(scope, receive, send)
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\starlette\applications.py:107: in __call__
+    await self.middleware_stack(scope, receive, send)
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\starlette\middleware\errors.py:186: in __call__
+    raise exc
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\starlette\middleware\errors.py:164: in __call__
+    await self.app(scope, receive, _send)
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\starlette\middleware\cors.py:85: in __call__
+    await self.app(scope, receive, send)
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\starlette\middleware\exceptions.py:63: in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\starlette\_exception_handler.py:53: in wrapped_app
+    raise exc
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\starlette\_exception_handler.py:42: in wrapped_app
+    await app(scope, receive, sender)
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\fastapi\middleware\asyncexitstack.py:18: in __call__
+    await self.app(scope, receive, send)
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\starlette\routing.py:716: in __call__
+    await self.middleware_stack(scope, receive, send)
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\starlette\routing.py:736: in app
+    await route.handle(scope, receive, send)
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\starlette\routing.py:290: in handle
+    await self.app(scope, receive, send)
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\fastapi\routing.py:120: in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\starlette\_exception_handler.py:53: in wrapped_app
+    raise exc
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\starlette\_exception_handler.py:42: in wrapped_app
+    await app(scope, receive, sender)
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\fastapi\routing.py:106: in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\fastapi\routing.py:430: in app
+    raw_response = await run_endpoint_function(
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\fastapi\routing.py:318: in run_endpoint_function
+    return await run_in_threadpool(dependant.call, **values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\starlette\concurrency.py:32: in run_in_threadpool
+    return await anyio.to_thread.run_sync(func)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\anyio\to_thread.py:61: in run_sync
+    return await get_async_backend().run_sync_in_worker_thread(
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\anyio\_backends\_asyncio.py:2525: in run_sync_in_worker_thread
+    return await future
+           ^^^^^^^^^^^^
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\anyio\_backends\_asyncio.py:986: in run
+    result = context.run(func, *args)
+             ^^^^^^^^^^^^^^^^^^^^^^^^
+backend\app\api\routes\users.py:20: in register_user
+    existing = user_service.get_user_by_email(db, user_data.email)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+backend\app\services\user_service.py:41: in get_user_by_email
+    return db.query(User).filter(User.email == email).first()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\sqlalchemy\orm\query.py:2759: in first
+    return self.limit(1)._iter().first()  # type: ignore
+           ^^^^^^^^^^^^^^^^^^^^^
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\sqlalchemy\orm\query.py:2857: in _iter
+    result: Union[ScalarResult[_T], Result[_T]] = self.session.execute(
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\sqlalchemy\orm\session.py:2351: in execute
+    return self._execute_internal(
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\sqlalchemy\orm\session.py:2249: in _execute_internal
+    result: Result[Any] = compile_state_cls.orm_execute_statement(
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\sqlalchemy\orm\context.py:306: in orm_execute_statement
+    result = conn.execute(
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\sqlalchemy\engine\base.py:1419: in execute
+    return meth(
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\sqlalchemy\sql\elements.py:527: in _execute_on_connection
+    return connection._execute_clauseelement(
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\sqlalchemy\engine\base.py:1641: in _execute_clauseelement
+    ret = self._execute_context(
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\sqlalchemy\engine\base.py:1846: in _execute_context
+    return self._exec_single_context(
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\sqlalchemy\engine\base.py:1986: in _exec_single_context
+    self._handle_dbapi_exception(
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\sqlalchemy\engine\base.py:2363: in _handle_dbapi_exception
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\sqlalchemy\engine\base.py:1967: in _exec_single_context
+    self.dialect.do_execute(
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\sqlalchemy\engine\default.py:952: in do_execute
+    cursor.execute(statement, parameters)
+E   sqlalchemy.exc.OperationalError: (sqlite3.OperationalError) no such table: users
+E   [SQL: SELECT users.id AS users_id, users.name AS users_name, users.email AS users_email, users.password_hash AS users_password_hash, users.goals AS users_goals, users.learning_level AS users_learning_level, users.preferred_topics AS users_preferred_topics, users.daily_study_time AS users_daily_study_time, users.preferred_style AS users_preferred_style, users.career_goal AS users_career_goal, users.streak_days AS users_streak_days, users.total_study_minutes AS users_total_study_minutes, users.last_active AS users_last_active, users.created_at AS users_created_at, users.updated_at AS users_updated_at 
+E   FROM users 
+E   WHERE users.email = ?
+E    LIMIT ? OFFSET ?]
+E   [parameters: ('dashboard@test.com', 1, 0)]
+E   (Background on this error at: https://sqlalche.me/e/20/e3q8)
+---------------------------- Captured stdout call -----------------------------
+2026-03-26 14:20:52,195 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-03-26 14:20:52,197 INFO sqlalchemy.engine.Engine SELECT users.id AS users_id, users.name AS users_name, users.email AS users_email, users.password_hash AS users_password_hash, users.goals AS users_goals, users.learning_level AS users_learning_level, users.preferred_topics AS users_preferred_topics, users.daily_study_time AS users_daily_study_time, users.preferred_style AS users_preferred_style, users.career_goal AS users_career_goal, users.streak_days AS users_streak_days, users.total_study_minutes AS users_total_study_minutes, users.last_active AS users_last_active, users.created_at AS users_created_at, users.updated_at AS users_updated_at 
+FROM users 
+WHERE users.email = ?
+ LIMIT ? OFFSET ?
+2026-03-26 14:20:52,197 INFO sqlalchemy.engine.Engine [cached since 5.656s ago] ('dashboard@test.com', 1, 0)
+2026-03-26 14:20:52,204 INFO sqlalchemy.engine.Engine ROLLBACK
+------------------------------ Captured log call ------------------------------
+INFO     sqlalchemy.engine.Engine:base.py:2710 BEGIN (implicit)
+INFO     sqlalchemy.engine.Engine:base.py:1846 SELECT users.id AS users_id, users.name AS users_name, users.email AS users_email, users.password_hash AS users_password_hash, users.goals AS users_goals, users.learning_level AS users_learning_level, users.preferred_topics AS users_preferred_topics, users.daily_study_time AS users_daily_study_time, users.preferred_style AS users_preferred_style, users.career_goal AS users_career_goal, users.streak_days AS users_streak_days, users.total_study_minutes AS users_total_study_minutes, users.last_active AS users_last_active, users.created_at AS users_created_at, users.updated_at AS users_updated_at 
+FROM users 
+WHERE users.email = ?
+ LIMIT ? OFFSET ?
+INFO     sqlalchemy.engine.Engine:base.py:1846 [cached since 5.656s ago] ('dashboard@test.com', 1, 0)
+INFO     sqlalchemy.engine.Engine:base.py:2713 ROLLBACK
+____________________________ test_progress_update _____________________________
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\sqlalchemy\engine\base.py:1967: in _exec_single_context
+    self.dialect.do_execute(
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\sqlalchemy\engine\default.py:952: in do_execute
+    cursor.execute(statement, parameters)
+E   sqlite3.OperationalError: no such table: users
+
+The above exception was the direct cause of the following exception:
+tests\test_api.py:114: in test_progress_update
+    reg = client.post("/api/users/register", json={
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\starlette\testclient.py:546: in post
+    return super().post(
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\httpx\_client.py:1144: in post
+    return self.request(
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\starlette\testclient.py:445: in request
+    return super().request(
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\httpx\_client.py:825: in request
+    return self.send(request, auth=auth, follow_redirects=follow_redirects)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\httpx\_client.py:914: in send
+    response = self._send_handling_auth(
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\httpx\_client.py:942: in _send_handling_auth
+    response = self._send_handling_redirects(
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\httpx\_client.py:979: in _send_handling_redirects
+    response = self._send_single_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\httpx\_client.py:1014: in _send_single_request
+    response = transport.handle_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\starlette\testclient.py:348: in handle_request
+    raise exc
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\starlette\testclient.py:345: in handle_request
+    portal.call(self.app, scope, receive, send)
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\anyio\from_thread.py:326: in call
+    return cast(T_Retval, self.start_task_soon(func, *args).result())
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\concurrent\futures\_base.py:456: in result
+    return self.__get_result()
+           ^^^^^^^^^^^^^^^^^^^
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\concurrent\futures\_base.py:401: in __get_result
+    raise self._exception
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\anyio\from_thread.py:257: in _call_func
+    retval = await retval_or_awaitable
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\fastapi\applications.py:1139: in __call__
+    await super().__call__(scope, receive, send)
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\starlette\applications.py:107: in __call__
+    await self.middleware_stack(scope, receive, send)
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\starlette\middleware\errors.py:186: in __call__
+    raise exc
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\starlette\middleware\errors.py:164: in __call__
+    await self.app(scope, receive, _send)
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\starlette\middleware\cors.py:85: in __call__
+    await self.app(scope, receive, send)
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\starlette\middleware\exceptions.py:63: in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\starlette\_exception_handler.py:53: in wrapped_app
+    raise exc
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\starlette\_exception_handler.py:42: in wrapped_app
+    await app(scope, receive, sender)
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\fastapi\middleware\asyncexitstack.py:18: in __call__
+    await self.app(scope, receive, send)
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\starlette\routing.py:716: in __call__
+    await self.middleware_stack(scope, receive, send)
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\starlette\routing.py:736: in app
+    await route.handle(scope, receive, send)
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\starlette\routing.py:290: in handle
+    await self.app(scope, receive, send)
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\fastapi\routing.py:120: in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\starlette\_exception_handler.py:53: in wrapped_app
+    raise exc
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\starlette\_exception_handler.py:42: in wrapped_app
+    await app(scope, receive, sender)
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\fastapi\routing.py:106: in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\fastapi\routing.py:430: in app
+    raw_response = await run_endpoint_function(
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\fastapi\routing.py:318: in run_endpoint_function
+    return await run_in_threadpool(dependant.call, **values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\starlette\concurrency.py:32: in run_in_threadpool
+    return await anyio.to_thread.run_sync(func)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\anyio\to_thread.py:61: in run_sync
+    return await get_async_backend().run_sync_in_worker_thread(
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\anyio\_backends\_asyncio.py:2525: in run_sync_in_worker_thread
+    return await future
+           ^^^^^^^^^^^^
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\anyio\_backends\_asyncio.py:986: in run
+    result = context.run(func, *args)
+             ^^^^^^^^^^^^^^^^^^^^^^^^
+backend\app\api\routes\users.py:20: in register_user
+    existing = user_service.get_user_by_email(db, user_data.email)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+backend\app\services\user_service.py:41: in get_user_by_email
+    return db.query(User).filter(User.email == email).first()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\sqlalchemy\orm\query.py:2759: in first
+    return self.limit(1)._iter().first()  # type: ignore
+           ^^^^^^^^^^^^^^^^^^^^^
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\sqlalchemy\orm\query.py:2857: in _iter
+    result: Union[ScalarResult[_T], Result[_T]] = self.session.execute(
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\sqlalchemy\orm\session.py:2351: in execute
+    return self._execute_internal(
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\sqlalchemy\orm\session.py:2249: in _execute_internal
+    result: Result[Any] = compile_state_cls.orm_execute_statement(
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\sqlalchemy\orm\context.py:306: in orm_execute_statement
+    result = conn.execute(
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\sqlalchemy\engine\base.py:1419: in execute
+    return meth(
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\sqlalchemy\sql\elements.py:527: in _execute_on_connection
+    return connection._execute_clauseelement(
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\sqlalchemy\engine\base.py:1641: in _execute_clauseelement
+    ret = self._execute_context(
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\sqlalchemy\engine\base.py:1846: in _execute_context
+    return self._exec_single_context(
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\sqlalchemy\engine\base.py:1986: in _exec_single_context
+    self._handle_dbapi_exception(
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\sqlalchemy\engine\base.py:2363: in _handle_dbapi_exception
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\sqlalchemy\engine\base.py:1967: in _exec_single_context
+    self.dialect.do_execute(
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\sqlalchemy\engine\default.py:952: in do_execute
+    cursor.execute(statement, parameters)
+E   sqlalchemy.exc.OperationalError: (sqlite3.OperationalError) no such table: users
+E   [SQL: SELECT users.id AS users_id, users.name AS users_name, users.email AS users_email, users.password_hash AS users_password_hash, users.goals AS users_goals, users.learning_level AS users_learning_level, users.preferred_topics AS users_preferred_topics, users.daily_study_time AS users_daily_study_time, users.preferred_style AS users_preferred_style, users.career_goal AS users_career_goal, users.streak_days AS users_streak_days, users.total_study_minutes AS users_total_study_minutes, users.last_active AS users_last_active, users.created_at AS users_created_at, users.updated_at AS users_updated_at 
+E   FROM users 
+E   WHERE users.email = ?
+E    LIMIT ? OFFSET ?]
+E   [parameters: ('progress@test.com', 1, 0)]
+E   (Background on this error at: https://sqlalche.me/e/20/e3q8)
+---------------------------- Captured stdout call -----------------------------
+2026-03-26 14:20:55,407 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-03-26 14:20:55,409 INFO sqlalchemy.engine.Engine SELECT users.id AS users_id, users.name AS users_name, users.email AS users_email, users.password_hash AS users_password_hash, users.goals AS users_goals, users.learning_level AS users_learning_level, users.preferred_topics AS users_preferred_topics, users.daily_study_time AS users_daily_study_time, users.preferred_style AS users_preferred_style, users.career_goal AS users_career_goal, users.streak_days AS users_streak_days, users.total_study_minutes AS users_total_study_minutes, users.last_active AS users_last_active, users.created_at AS users_created_at, users.updated_at AS users_updated_at 
+FROM users 
+WHERE users.email = ?
+ LIMIT ? OFFSET ?
+2026-03-26 14:20:55,409 INFO sqlalchemy.engine.Engine [cached since 8.868s ago] ('progress@test.com', 1, 0)
+2026-03-26 14:20:55,415 INFO sqlalchemy.engine.Engine ROLLBACK
+------------------------------ Captured log call ------------------------------
+INFO     sqlalchemy.engine.Engine:base.py:2710 BEGIN (implicit)
+INFO     sqlalchemy.engine.Engine:base.py:1846 SELECT users.id AS users_id, users.name AS users_name, users.email AS users_email, users.password_hash AS users_password_hash, users.goals AS users_goals, users.learning_level AS users_learning_level, users.preferred_topics AS users_preferred_topics, users.daily_study_time AS users_daily_study_time, users.preferred_style AS users_preferred_style, users.career_goal AS users_career_goal, users.streak_days AS users_streak_days, users.total_study_minutes AS users_total_study_minutes, users.last_active AS users_last_active, users.created_at AS users_created_at, users.updated_at AS users_updated_at 
+FROM users 
+WHERE users.email = ?
+ LIMIT ? OFFSET ?
+INFO     sqlalchemy.engine.Engine:base.py:1846 [cached since 8.868s ago] ('progress@test.com', 1, 0)
+INFO     sqlalchemy.engine.Engine:base.py:2713 ROLLBACK
+============================== warnings summary ===============================
+backend\app\core\config.py:13
+  D:\learning\learn\ai-mentor\tests\..\backend\app\core\config.py:13: PydanticDeprecatedSince20: Support for class-based `config` is deprecated, use ConfigDict instead. Deprecated in Pydantic V2.0 to be removed in V3.0. See Pydantic V2 Migration Guide at https://errors.pydantic.dev/2.12/migration/
+    class Settings(BaseSettings):
+
+backend\app\main.py:37
+  D:\learning\learn\ai-mentor\tests\..\backend\app\main.py:37: DeprecationWarning: 
+          on_event is deprecated, use lifespan event handlers instead.
+  
+          Read more about it in the
+          [FastAPI docs for Lifespan Events](https://fastapi.tiangolo.com/advanced/events/).
+          
+    @app.on_event("startup")
+
+C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\fastapi\applications.py:4580
+  C:\Users\peepl\AppData\Local\Programs\Python\Python311\Lib\site-packages\fastapi\applications.py:4580: DeprecationWarning: 
+          on_event is deprecated, use lifespan event handlers instead.
+  
+          Read more about it in the
+          [FastAPI docs for Lifespan Events](https://fastapi.tiangolo.com/advanced/events/).
+          
+    return self.router.on_event(event_type)
+
+backend\app\schemas\user.py:36
+  D:\learning\learn\ai-mentor\tests\..\backend\app\schemas\user.py:36: PydanticDeprecatedSince20: Support for class-based `config` is deprecated, use ConfigDict instead. Deprecated in Pydantic V2.0 to be removed in V3.0. See Pydantic V2 Migration Guide at https://errors.pydantic.dev/2.12/migration/
+    class UserResponse(BaseModel):
+
+backend\app\schemas\roadmap.py:33
+  D:\learning\learn\ai-mentor\tests\..\backend\app\schemas\roadmap.py:33: PydanticDeprecatedSince20: Support for class-based `config` is deprecated, use ConfigDict instead. Deprecated in Pydantic V2.0 to be removed in V3.0. See Pydantic V2 Migration Guide at https://errors.pydantic.dev/2.12/migration/
+    class RoadmapResponse(BaseModel):
+
+backend\app\schemas\progress.py:20
+  D:\learning\learn\ai-mentor\tests\..\backend\app\schemas\progress.py:20: PydanticDeprecatedSince20: Support for class-based `config` is deprecated, use ConfigDict instead. Deprecated in Pydantic V2.0 to be removed in V3.0. See Pydantic V2 Migration Guide at https://errors.pydantic.dev/2.12/migration/
+    class ProgressResponse(BaseModel):
+
+backend\app\schemas\quiz.py:42
+  D:\learning\learn\ai-mentor\tests\..\backend\app\schemas\quiz.py:42: PydanticDeprecatedSince20: Support for class-based `config` is deprecated, use ConfigDict instead. Deprecated in Pydantic V2.0 to be removed in V3.0. See Pydantic V2 Migration Guide at https://errors.pydantic.dev/2.12/migration/
+    class QuizResultResponse(BaseModel):
+
+backend\app\schemas\code_submission.py:42
+  D:\learning\learn\ai-mentor\tests\..\backend\app\schemas\code_submission.py:42: PydanticDeprecatedSince20: Support for class-based `config` is deprecated, use ConfigDict instead. Deprecated in Pydantic V2.0 to be removed in V3.0. See Pydantic V2 Migration Guide at https://errors.pydantic.dev/2.12/migration/
+    class CodeResultResponse(BaseModel):
+
+backend\app\schemas\memory.py:29
+  D:\learning\learn\ai-mentor\tests\..\backend\app\schemas\memory.py:29: PydanticDeprecatedSince20: Support for class-based `config` is deprecated, use ConfigDict instead. Deprecated in Pydantic V2.0 to be removed in V3.0. See Pydantic V2 Migration Guide at https://errors.pydantic.dev/2.12/migration/
+    class MemoryResponse(BaseModel):
+
+backend\app\schemas\project.py:40
+  D:\learning\learn\ai-mentor\tests\..\backend\app\schemas\project.py:40: PydanticDeprecatedSince20: Support for class-based `config` is deprecated, use ConfigDict instead. Deprecated in Pydantic V2.0 to be removed in V3.0. See Pydantic V2 Migration Guide at https://errors.pydantic.dev/2.12/migration/
+    class ProjectReviewResponse(BaseModel):
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ===========================
+FAILED tests/test_api.py::test_register_user - sqlalchemy.exc.OperationalErro...
+FAILED tests/test_api.py::test_login_user - sqlalchemy.exc.OperationalError: ...
+FAILED tests/test_api.py::test_get_curriculum - assert 422 == 200
+FAILED tests/test_api.py::test_onboard_user - sqlalchemy.exc.OperationalError...
+FAILED tests/test_api.py::test_dashboard - sqlalchemy.exc.OperationalError: (...
+FAILED tests/test_api.py::test_progress_update - sqlalchemy.exc.OperationalEr...
+================== 6 failed, 2 passed, 10 warnings in 13.81s ==================
