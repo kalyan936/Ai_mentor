@@ -3,101 +3,137 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta name="description" content="AI Mentor - Adaptive AI Learning Platform for Python, ML, DL, NLP, GenAI & Agentic AI">
-    <meta name="theme-color" content="#0F172A">
+    <meta name="description" content="AI Mentor - Premium Adaptive AI Learning Experience">
+    <meta name="theme-color" content="#030712">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <title>AI Mentor - Adaptive Learning Platform</title>
+    <title>AI Mentor | Premium Learning Platform</title>
+    
     <link rel="manifest" href="manifest.json">
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🧠</text></svg>">
+    
+    <!-- Premium Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-    <!-- Sidebar -->
-    <aside id="sidebar" class="sidebar">
-        <div class="sidebar-header">
-            <h1 class="logo">🧠 <span class="gradient-text">AI Mentor</span></h1>
-            <p class="logo-sub">Adaptive AI Learning</p>
-        </div>
-        <div id="sidebar-user" class="sidebar-user hidden">
-            <div class="user-avatar" id="user-avatar">L</div>
-            <span id="sidebar-name">Learner</span>
-        </div>
-        <nav id="sidebar-nav" class="sidebar-nav hidden">
-            <a href="#dashboard" class="nav-item active" data-page="dashboard">
-                <span class="nav-icon">🏠</span> Dashboard
-            </a>
-            <a href="#roadmap" class="nav-item" data-page="roadmap">
-                <span class="nav-icon">🗺️</span> Roadmap
-            </a>
-            <a href="#lessons" class="nav-item" data-page="lessons">
-                <span class="nav-icon">📖</span> Lessons
-            </a>
-            <a href="#tutor" class="nav-item" data-page="tutor">
-                <span class="nav-icon">💬</span> AI Tutor
-            </a>
-            <a href="#quiz" class="nav-item" data-page="quiz">
-                <span class="nav-icon">📝</span> Quiz Arena
-            </a>
-            <a href="#coding" class="nav-item" data-page="coding">
-                <span class="nav-icon">💻</span> Code Lab
-            </a>
-            <a href="#debug" class="nav-item" data-page="debug">
-                <span class="nav-icon">🐛</span> Debug Helper
-            </a>
-            <a href="#projects" class="nav-item" data-page="projects">
-                <span class="nav-icon">🔨</span> Projects
-            </a>
-            <a href="#analytics" class="nav-item" data-page="analytics">
-                <span class="nav-icon">📊</span> Analytics
-            </a>
-            <a href="#settings" class="nav-item" data-page="settings">
-                <span class="nav-icon">⚙️</span> Settings
-            </a>
-        </nav>
-        <div id="sidebar-streak" class="sidebar-streak hidden">
-            <span class="streak-fire">🔥</span>
-            <span id="streak-count">0</span> day streak
-        </div>
-        <button id="logout-btn" class="btn-logout hidden" onclick="logout()">🚪 Logout</button>
-    </aside>
+    <div class="app-container">
+        <!-- ── Premium Sidebar ── -->
+        <aside id="sidebar" class="sidebar">
+            <div class="sidebar-header">
+                <h1 class="logo">
+                    <span class="accent-glow">🧠</span>
+                    <span class="gradient-text">AI Mentor</span>
+                </h1>
+                <p style="font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 2px; margin-top: 0.5rem;">Adaptive Studio</p>
+            </div>
 
-    <!-- Mobile Header -->
-    <header id="mobile-header" class="mobile-header">
-        <button class="hamburger" onclick="toggleSidebar()">☰</button>
-        <span class="gradient-text">AI Mentor</span>
-        <span id="mobile-streak" class="mobile-streak">🔥 0</span>
-    </header>
+            <div id="sidebar-user" class="sidebar-user hidden" style="margin-bottom: 2rem; padding: 1rem; background: rgba(255,255,255,0.03); border: 1px solid var(--glass-border); border-radius: var(--radius-m); display: flex; align-items: center; gap: 1rem;">
+                <div id="user-avatar" style="width: 40px; height: 40px; border-radius: 50%; background: var(--p-grad); display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 1.2rem;">L</div>
+                <div style="overflow: hidden;">
+                    <p id="sidebar-name" style="font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Learner</p>
+                    <p style="font-size: 0.7rem; color: var(--text-secondary);">Pro Account</p>
+                </div>
+            </div>
 
-    <!-- Main Content -->
-    <main id="main-content" class="main-content">
-        <!-- Pages are rendered here by JavaScript -->
-        <div id="page-container"></div>
-    </main>
+            <nav id="sidebar-nav" class="sidebar-nav hidden">
+                <a href="#dashboard" class="nav-item active" data-page="dashboard">
+                    <span class="nav-icon"><i class="fas fa-home"></i></span> Dashboard
+                </a>
+                <a href="#roadmap" class="nav-item" data-page="roadmap">
+                    <span class="nav-icon"><i class="fas fa-map-signs"></i></span> Learning Path
+                </a>
+                <a href="#lessons" class="nav-item" data-page="lessons">
+                    <span class="nav-icon"><i class="fas fa-book-open"></i></span> Lessons
+                </a>
+                <a href="#tutor" class="nav-item" data-page="tutor">
+                    <span class="nav-icon"><i class="fas fa-message"></i></span> AI Tutor
+                </a>
+                <a href="#quiz" class="nav-item" data-page="quiz">
+                    <span class="nav-icon"><i class="fas fa-vial"></i></span> Quiz Arena
+                </a>
+                <a href="#coding" class="nav-item" data-page="coding">
+                    <span class="nav-icon"><i class="fas fa-code"></i></span> Code Lab
+                </a>
+                <a href="#settings" class="nav-item" data-page="settings">
+                    <span class="nav-icon"><i class="fas fa-sliders"></i></span> Settings
+                </a>
+            </nav>
 
-    <!-- Toast Notification -->
+            <div id="sidebar-streak" class="sidebar-streak hidden" style="margin-top: auto; padding: 1rem; background: rgba(245,158,11,0.05); border: 1px solid rgba(245,158,11,0.1); border-radius: var(--radius-m); display: flex; align-items: center; gap: 0.75rem; color: var(--warning); margin-bottom: 1rem;">
+                <span style="font-size: 1.5rem;">🔥</span>
+                <div>
+                    <p style="font-size: 0.7rem; text-transform: uppercase; font-weight: 800;">Daily Streak</p>
+                    <p style="font-weight: 900; font-size: 1.1rem;"><span id="streak-count">0</span> Days</p>
+                </div>
+            </div>
+            
+            <button id="logout-btn" class="btn btn-glass hidden" onclick="logout()" style="width: 100%; border-radius: var(--radius-m); font-size: 0.85rem;">
+                <i class="fas fa-sign-out-alt"></i> Logout
+            </button>
+        </aside>
+
+        <!-- ── Main Activity ── -->
+        <main id="main-content" class="main-content">
+            <!-- Pages rendered dynamically -->
+            <div id="page-container" style="animation: fadeIn 0.6s ease;"></div>
+        </main>
+    </div>
+
+    <!-- ── Mobile App Bottom Nav ── -->
+    <nav class="mobile-nav">
+        <a href="#dashboard" class="mob-nav-item active" data-page="dashboard">
+            <i class="fas fa-house"></i>
+            <span>Home</span>
+        </a>
+        <a href="#roadmap" class="mob-nav-item" data-page="roadmap">
+            <i class="fas fa-route"></i>
+            <span>Path</span>
+        </a>
+        <a href="#tutor" class="mob-nav-item" data-page="tutor">
+            <i class="fas fa-brain"></i>
+            <span>AI</span>
+        </a>
+        <a href="#settings" class="mob-nav-item" data-page="settings">
+            <i class="fas fa-gears"></i>
+            <span>Menu</span>
+        </a>
+    </nav>
+
+    <!-- ── Global Components ── -->
     <div id="toast" class="toast hidden"></div>
 
-    <!-- Loading Overlay -->
     <div id="loading" class="loading-overlay hidden">
         <div class="loading-spinner">
             <div class="spinner"></div>
-            <p id="loading-text">AI is thinking...</p>
+            <p id="loading-text" class="gradient-text" style="font-weight: 700;">AI Mentor is planning...</p>
         </div>
     </div>
 
+    <!-- Application Logic -->
     <script src="js/data.js"></script>
     <script src="js/db.js"></script>
     <script src="js/llm.js"></script>
     <script src="js/agents.js"></script>
     <script src="js/components.js"></script>
     <script src="js/app.js"></script>
+    
     <script>
+        // PWA Service Worker Registration
         if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('sw.js').catch(() => {});
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('sw.js').then(reg => {
+                    console.log('SW Registered!', reg);
+                }).catch(err => {
+                    console.log('SW Registration failed!', err);
+                });
+            });
         }
     </script>
 </body>

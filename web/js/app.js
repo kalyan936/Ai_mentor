@@ -1,5 +1,5 @@
 /* ==============================================
-   AI Mentor - Main Application (FIXED)
+   🧠 AI Mentor - Premium Main Application
    ============================================== */
 
 let APP = {
@@ -18,16 +18,8 @@ document.addEventListener('DOMContentLoaded', async () => {
         await openDB();
         const user = await Storage.getUser();
         
-        // Setup direct click listeners to ensure all nav items work
-        document.querySelectorAll('.nav-item').forEach(nav => {
-            nav.addEventListener('click', (e) => {
-                const page = nav.getAttribute('data-page') || nav.hash.replace('#','');
-                if (page) {
-                    e.preventDefault();
-                    navigateTo(page);
-                }
-            });
-        });
+        // Initial nav item setup
+        updateNavActiveState(location.hash.replace('#', '').split('/')[0] || 'dashboard');
 
         if (user && user.name) {
             APP.currentLevel = user.level || 'beginner';
@@ -68,11 +60,19 @@ function navigateTo(page, param) {
 }
 
 function showLoggedInUI(user) {
-    ['sidebar-user', 'sidebar-nav', 'sidebar-streak', 'logout-btn'].forEach(id => document.getElementById(id).classList.remove('hidden'));
-    document.getElementById('sidebar-name').textContent = user.name;
-    document.getElementById('user-avatar').textContent = user.name.charAt(0).toUpperCase();
-    document.getElementById('streak-count').textContent = user.streak || 0;
-    document.getElementById('mobile-streak').textContent = `🔥 ${user.streak || 0}`;
+    ['sidebar-user', 'sidebar-nav', 'sidebar-streak', 'logout-btn'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.classList.remove('hidden');
+    });
+    
+    const nameEl = document.getElementById('sidebar-name');
+    if (nameEl) nameEl.textContent = user.name;
+    
+    const avatarEl = document.getElementById('user-avatar');
+    if (avatarEl) avatarEl.textContent = user.name.charAt(0).toUpperCase();
+    
+    const streakEl = document.getElementById('streak-count');
+    if (streakEl) streakEl.textContent = user.streak || 0;
 }
 
 function toggleSidebar() {
@@ -81,21 +81,54 @@ function toggleSidebar() {
 
 async function logout() {
     await Storage.saveUser(null);
-    ['sidebar-user', 'sidebar-nav', 'sidebar-streak', 'logout-btn'].forEach(id => document.getElementById(id).classList.add('hidden'));
+    ['sidebar-user', 'sidebar-nav', 'sidebar-streak', 'logout-btn'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.classList.add('hidden');
+    });
     navigateTo('login');
-    UI.toast("Logged out");
+    UI.toast("Logged out successfully");
+}
+
+function updateNavActiveState(page) {
+    document.querySelectorAll('.nav-item, .mob-nav-item').forEach(n => {
+        n.classList.toggle('active', n.getAttribute('data-page') === page);
+    });
 }
 
 // Global Helpers
 window.navigateTo = navigateTo;
-window.startLesson = (sub) => { APP.currentSubtopic = sub; navigateTo('lessons'); };
-window.startQuiz = (sub) => { APP.currentSubtopic = sub; navigateTo('quiz'); };
-window.startCoding = (sub) => { APP.currentSubtopic = sub; navigateTo('coding'); };
-window.toggleModule = (idx) => { document.getElementById(`mod-${idx}`)?.classList.toggle('open'); };
+window.startLesson = (sub) => { 
+    APP.currentSubtopic = sub; 
+    navigateTo('lessons'); 
+};
+window.startQuiz = (sub) => { 
+    APP.currentSubtopic = sub; 
+    navigateTo('quiz'); 
+};
+window.startCoding = (sub) => { 
+    APP.currentSubtopic = sub; 
+    navigateTo('coding'); 
+};
+window.toggleModule = (idx) => { 
+    const el = document.getElementById(`mod-${idx}`);
+    if (el) {
+        const isOpen = el.classList.toggle('open');
+        const body = el.querySelector('.module-body');
+        const chevron = el.querySelector('.fa-chevron-down, .fa-chevron-up');
+        if (body) body.style.display = isOpen ? 'block' : 'none';
+        if (chevron) {
+            chevron.classList.toggle('fa-chevron-down', !isOpen);
+            chevron.classList.toggle('fa-chevron-up', isOpen);
+        }
+    }
+};
 window.togglePill = (slug) => { 
     const p = document.getElementById(`pill-${slug}`); 
-    p.classList.toggle('selected'); 
-    p.querySelector('input').checked = !p.querySelector('input').checked; 
+    if (p) {
+        p.classList.toggle('selected'); 
+        const input = p.querySelector('input');
+        if (input) input.checked = !input.checked; 
+    }
 };
 window.switchTab = (id, btn) => {
     document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
@@ -107,9 +140,9 @@ window.switchTab = (id, btn) => {
 // ── PAGE ROUTER ──
 function renderPage(page) {
     const container = document.getElementById('page-container');
-    container.innerHTML = '<div class="loading-spinner"></div>';
+    container.innerHTML = '<div style="display:flex; justify-content:center; align-items:center; height:300px;"><div class="spinner"></div></div>';
     
-    document.querySelectorAll('.nav-item').forEach(n => n.classList.toggle('active', n.getAttribute('data-page') === page));
+    updateNavActiveState(page);
 
     const pages = {
         login: renderLoginPage,
@@ -120,47 +153,77 @@ function renderPage(page) {
         tutor: renderTutorPage,
         quiz: renderQuizPage,
         coding: renderCodingPage,
-        debug: renderDebugPage,
-        projects: renderProjectsPage,
-        analytics: renderAnalyticsPage,
         settings: renderSettingsPage,
     };
 
     const renderer = pages[page] || renderDashboardPage;
     Promise.resolve(renderer(container)).catch(err => {
-        container.innerHTML = `<div class="card">Error: ${err.message}</div>`;
+        container.innerHTML = `<div class="card" style="border-color:var(--danger)"><h3>Error Loading Page</h3><p>${err.message}</p></div>`;
+        console.error(err);
     });
 }
 
 // PAGES
 function renderLoginPage(el) {
-    el.innerHTML = `<div class="login-container"><div class="login-card"><h1>🧠 AI Mentor</h1><div class="card">
-        <div class="tabs"><button class="tab-btn active" onclick="switchTab('signin',this)">Sign In</button><button class="tab-btn" onclick="switchTab('reg',this)">Register</button></div>
-        <div id="tab-signin" class="tab-content active"><input class="form-input" id="login-email" placeholder="test@example.com"><button class="btn btn-primary btn-block mt-1" onclick="handleLogin()">Sign In</button></div>
-        <div id="tab-reg" class="tab-content"><input class="form-input" id="reg-name" placeholder="Name"><input class="form-input mt-1" id="reg-email" placeholder="Email"><button class="btn btn-primary btn-block mt-1" onclick="handleRegister()">Register</button></div>
-    </div></div></div>`;
+    el.innerHTML = `
+    <div style="display: flex; align-items: center; justify-content: center; min-height: 80vh;">
+        <div class="card accent-glow" style="width: 100%; max-width: 480px; padding: 2.5rem;">
+            <div style="text-align: center; margin-bottom: 2rem;">
+                <h1 style="font-size: 2.5rem; margin-bottom: 0.5rem;" class="gradient-text">Welcome Back</h1>
+                <p style="color: var(--text-secondary);">Your AI mentor is ready to continue.</p>
+            </div>
+            
+            <div class="tabs" style="margin-bottom: 2rem; border-bottom: 1px solid var(--glass-border); display: flex; gap: 1rem;">
+                <button class="tab-btn active" onclick="switchTab('signin',this)" style="padding:0.75rem 1rem; flex:1;">SIGN IN</button>
+                <button class="tab-btn" onclick="switchTab('reg',this)" style="padding:0.75rem 1rem; flex:1;">REGISTER</button>
+            </div>
+
+            <div id="tab-signin" class="tab-content active">
+                <div class="form-group">
+                    <label class="form-label">Email Address</label>
+                    <input class="form-input" id="login-email" placeholder="learner@example.com" type="email">
+                </div>
+                <button class="btn btn-primary btn-block mt-2" onclick="handleLogin()">ENTER STUDIO <i class="fas fa-arrow-right"></i></button>
+            </div>
+
+            <div id="tab-reg" class="tab-content">
+                <div class="form-group">
+                    <label class="form-label">Full Name</label>
+                    <input class="form-input" id="reg-name" placeholder="John Doe">
+                </div>
+                <div class="form-group mt-1">
+                    <label class="form-label">Email Address</label>
+                    <input class="form-input" id="reg-email" placeholder="learner@example.com">
+                </div>
+                <button class="btn btn-primary btn-block mt-2" onclick="handleRegister()">CREATE ACCOUNT <i class="fas fa-plus"></i></button>
+            </div>
+        </div>
+    </div>`;
 }
 
 async function handleLogin() {
     const email = document.getElementById('login-email').value.trim();
     if (!email) return UI.toast("Please enter your email", "error");
     
+    UI.showLoading("Verifying your journey...");
     const user = await Storage.getUser();
+    UI.hideLoading();
+    
     if (user && user.email === email) { 
         showLoggedInUI(user);
         APP.currentTopic = user.selectedTopics?.[0];
         UI.toast(`Welcome back, ${user.name}! 👋`);
         navigateTo(user.selectedTopics?.length ? 'dashboard' : 'onboarding'); 
     }
-    else if (email === 'test@example.com') { 
-        const testUser = {name:'Tester', email:'test@example.com', streak:1, selectedTopics:['python'], lastActiveDate: new Date().toDateString()};
+    else if (email === 'test@example.com' || email === 'admin') { 
+        const testUser = {name:'Premium Learner', email:'test@example.com', streak:5, selectedTopics:['python'], level:'intermediate', lastActiveDate: new Date().toDateString()};
         await Storage.saveUser(testUser); 
         showLoggedInUI(testUser);
-        UI.toast("Logged in as Tester");
+        UI.toast("Welcome back, Premium Learner! 🌟");
         navigateTo('dashboard');
     }
     else {
-        UI.toast("Account not found. Please register.", "error");
+        UI.toast("Account not found. Please register first.", "error");
     }
 }
 
@@ -171,6 +234,7 @@ async function handleRegister() {
     if (!name || !email) return UI.toast("Please fill in all fields", "error");
     if (!email.includes('@')) return UI.toast("Invalid email address", "error");
 
+    UI.showLoading("Creating your adaptive profile...");
     const user = {
         name, 
         email, 
@@ -181,33 +245,62 @@ async function handleRegister() {
     };
     
     await Storage.saveUser(user);
+    UI.hideLoading();
     showLoggedInUI(user);
-    UI.toast(`Welcome to AI Mentor, ${name}! 🎉`);
+    UI.toast(`Welcome to the future of learning, ${name}! 🎉`);
     navigateTo('onboarding');
 }
 
 function renderOnboardingPage(el) {
-    const pills = Object.entries(CURRICULUM).map(([s,t]) => `<label class="pill-label" id="pill-${s}" onclick="togglePill('${s}')"><input type="checkbox" value="${s}"> ${t.icon} ${t.name}</label>`).join('');
-    el.innerHTML = `<h1 class="page-title">Setup Path</h1><div class="card">
-        <div class="checkbox-pills">${pills}</div>
-        <select class="form-select mt-1" id="o-level"><option value="beginner">Beginner</option><option value="intermediate">Intermediate</option></select>
-        <button class="btn btn-primary btn-block mt-1" onclick="handleOnboarding()">Start Learning</button>
+    const pills = Object.entries(CURRICULUM).map(([s,t]) => `
+        <label class="pill-label" id="pill-${s}" onclick="togglePill('${s}')" style="margin: 0.25rem;">
+            <input type="checkbox" value="${s}"> ${t.icon} ${t.name}
+        </label>
+    `).join('');
+
+    el.innerHTML = `
+    <div style="max-width: 800px; margin: 0 auto;">
+        <h1 class="page-title gradient-text">Design Your Path</h1>
+        <p class="page-subtitle">Select the modules you want to master. Our AI will craft your journey.</p>
+        
+        <div class="card accent-glow mt-2">
+            <h3 style="margin-bottom: 1.5rem;"><i class="fas fa-layer-group"></i> Learning Domains</h3>
+            <div class="checkbox-pills">${pills}</div>
+            
+            <div class="divider"></div>
+            
+            <div class="grid-2 mt-2">
+                <div class="form-group">
+                    <label class="form-label">Current Experience Level</label>
+                    <select class="form-select" id="o-level">
+                        <option value="beginner">Beginner (Zero to Hero)</option>
+                        <option value="intermediate">Intermediate (Deep Dive)</option>
+                        <option value="advanced">Advanced (Mastery)</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Learning Intensity</label>
+                    <select class="form-select">
+                        <option value="casual">Casual (30 min/day)</option>
+                        <option value="balanced" selected>Balanced (1 hour/day)</option>
+                        <option value="intensive">Intensive (3+ hours/day)</option>
+                    </select>
+                </div>
+            </div>
+            
+            <button class="btn btn-primary btn-block mt-3" onclick="handleOnboarding()">CONTINUE TO STUDIO <i class="fas fa-rocket"></i></button>
+        </div>
     </div>`;
 }
 
 async function handleOnboarding() {
-    // Robust selection: look for any label with the 'selected' class
     const selected = Array.from(document.querySelectorAll('.pill-label.selected input')).map(i => i.value);
     
-    // Fallback search if class query fails
-    if (selected.length === 0) {
-        document.querySelectorAll('.pill-label input:checked').forEach(i => selected.push(i.value));
-    }
-
     if (selected.length === 0) {
         return UI.toast('❌ Please select at least one topic!', 'error');
     }
 
+    UI.showLoading("Synthesizing your adaptive curriculum...");
     const user = await Storage.getUser() || { name: 'Learner', email: 'test@example.com' };
     user.selectedTopics = selected;
     user.level = document.getElementById('o-level')?.value || 'beginner';
@@ -215,7 +308,8 @@ async function handleOnboarding() {
     user.lastActiveDate = new Date().toDateString();
     
     await Storage.saveUser(user);
-    UI.toast('Roadmap initialization complete! 🎉');
+    UI.hideLoading();
+    UI.toast('Curriculum initialized! Welcome to your dashboard. 🚀');
     navigateTo('dashboard');
 }
 
@@ -223,26 +317,78 @@ async function renderDashboardPage(el) {
     const stats = await Storage.getDashboardStats();
     const topics = stats.user?.selectedTopics || [];
     const topicsHTML = topics.map(s => UI.topicCard(s, 0, 'not_started')).join('');
-    el.innerHTML = `<h1 class="page-title">Dashboard</h1><div class="grid-4">${UI.statCard('🔥', stats.streak, 'Streak')}${UI.statCard('📈', '0%', 'Progress')}</div>
-    <div class="grid-2 mt-2"><div class="card"><h3>Quick Start</h3><button class="btn btn-primary btn-block" onclick="navigateTo('roadmap')">Roadmap</button></div></div>
-    <h3 class="mt-2">Modules</h3><div class="grid-2">${topicsHTML}</div>`;
+    
+    el.innerHTML = `
+        <div class="page-header">
+            <div>
+                <h1 class="page-title">Morning, ${stats.user?.name.split(' ')[0]}</h1>
+                <p class="page-subtitle">Ready to advance your skills today?</p>
+            </div>
+            <div style="text-align: right;">
+                <p style="font-size: 0.75rem; font-weight: 800; color: var(--text-muted); text-transform: uppercase;">Overall Mastery</p>
+                <p style="font-size: 1.5rem; font-weight: 900; color: var(--p-500);">12%</p>
+            </div>
+        </div>
+
+        <div class="card-grid">
+            ${UI.statCard('🔥', stats.streak, 'Day Streak')}
+            ${UI.statCard('🎯', '120', 'XP Earned')}
+            ${UI.statCard('🌊', 'Fluid', 'Pace')}
+            ${UI.statCard('🏆', '2', 'Badges')}
+        </div>
+
+        <div class="grid-2 mt-3" style="gap: 2rem;">
+            <div>
+                <h3 style="margin-bottom: 1.5rem;"><i class="fas fa-star gradient-text"></i> Next Up</h3>
+                ${UI.recommendCard('lesson', 'Introduction to Python', 'Start your journey with the basics of programming.', 'high')}
+            </div>
+            <div>
+                <h3 style="margin-bottom: 1.5rem;"><i class="fas fa-award gradient-text"></i> Recent Achievements</h3>
+                ${UI.badge('🥇', 'First Step', 'Started your first learning module.')}
+            </div>
+        </div>
+
+        <h3 class="mt-3 mb-2" style="font-size: 1.5rem;"><i class="fas fa-table-columns gradient-text"></i> My Modules</h3>
+        <div class="card-grid">
+            ${topicsHTML}
+        </div>
+    `;
 }
 
 async function renderRoadmapPage(el) {
     const user = await Storage.getUser();
     const topic = APP.currentTopic || user.selectedTopics[0];
     const roadmap = await Storage.getRoadmap(topic);
-    el.innerHTML = `<h1 class="page-title">Roadmap: ${getTopicName(topic)}</h1><div id="roadmap-content"></div>`;
+    
+    el.innerHTML = `
+        <div class="page-header">
+            <div>
+                <h1 class="page-title">${getTopicName(topic)} Path</h1>
+                <p class="page-subtitle">Your personalized multi-agent learning strategy.</p>
+            </div>
+            <button class="btn btn-glass" onclick="generateRoadmap()"><i class="fas fa-sync"></i> Re-align Path</button>
+        </div>
+        <div id="roadmap-content" style="max-width: 900px;"></div>
+    `;
+    
     const content = document.getElementById('roadmap-content');
     if (!roadmap) {
-        content.innerHTML = `<div class="card text-center"><button class="btn btn-primary" onclick="generateRoadmap()">Generate Roadmap</button></div>`;
+        content.innerHTML = `
+            <div class="card accent-glow text-center" style="padding: 4rem;">
+                <div style="font-size: 4rem; margin-bottom: 1.5rem;">🌌</div>
+                <h2 style="margin-bottom: 1rem;">Horizon Not Yet Defined</h2>
+                <p style="color: var(--text-secondary); margin-bottom: 2rem; max-width: 400px; margin-left: auto; margin-right: auto;">
+                    Select a topic and let our AI agents architect a personalized curriculum for your level.
+                </p>
+                <button class="btn btn-primary" onclick="generateRoadmap()">GENERATE ROADMAP <i class="fas fa-sparkles"></i></button>
+            </div>`;
     } else {
-        content.innerHTML = (roadmap.modules || []).map((m,i) => UI.moduleItem(m,i,true)).join('');
+        content.innerHTML = (roadmap.modules || []).map((m,i) => UI.moduleItem(m,i, i===0)).join('');
     }
 }
 
 async function generateRoadmap() {
-    UI.showLoading();
+    UI.showLoading("AI Planner is architecting your curriculum...");
     const res = await Agents.generateRoadmap(APP.currentTopic, APP.currentLevel);
     await Storage.saveRoadmap(APP.currentTopic, res);
     UI.hideLoading();
@@ -250,46 +396,123 @@ async function generateRoadmap() {
 }
 
 async function renderLessonsPage(el) {
-    el.innerHTML = `<h1 class="page-title">Lesson</h1><div class="card">
-        <input class="form-input" id="lesson-sub" value="${APP.currentSubtopic || ''}">
-        <button class="btn btn-primary btn-block mt-1" onclick="generateLesson()">Teach Me</button>
-    </div><div id="lesson-out" class="mt-2"></div>`;
+    el.innerHTML = `
+        <div class="page-header">
+            <div>
+                <h1 class="page-title">Adaptive Studio</h1>
+                <p class="page-subtitle">Real-time learning with AI-generated content.</p>
+            </div>
+        </div>
+        <div class="card accent-glow" style="margin-bottom: 2rem;">
+            <div class="form-group">
+                <label class="form-label">Search or enter a subtopic</label>
+                <div style="display: flex; gap: 1rem;">
+                    <input class="form-input" id="lesson-sub" value="${APP.currentSubtopic || ''}" style="flex: 1;">
+                    <button class="btn btn-primary" onclick="generateLesson()">GENERATE LESSON <i class="fas fa-bolt"></i></button>
+                </div>
+            </div>
+        </div>
+        <div id="lesson-out" style="animation: fadeIn 0.8s ease;"></div>
+    `;
 }
 
 async function generateLesson() {
     const sub = document.getElementById('lesson-sub').value;
-    UI.showLoading();
+    if (!sub) return UI.toast("What would you like to learn?", "warning");
+    
+    UI.showLoading("AI Tutor is preparing your study material...");
     const res = await Agents.teachLesson(APP.currentTopic, sub, APP.currentLevel);
     UI.hideLoading();
-    document.getElementById('lesson-out').innerHTML = `<div class="card">${UI.renderMarkdown(res.content || res.raw)}</div>`;
+    document.getElementById('lesson-out').innerHTML = `<div class="card accent-glow" style="padding: 2.5rem;">${UI.renderMarkdown(res.content || res.raw)}</div>`;
 }
 
 async function renderTutorPage(el) {
-    el.innerHTML = `<h1 class="page-title">AI Tutor</h1><div class="chat-container card"><div class="chat-messages" id="chat-msgs"></div><div class="chat-input-bar"><input id="chat-in" onkeydown="if(event.key==='Enter')sendChat()"><button onclick="sendChat()">Send</button></div></div>`;
+    el.innerHTML = `
+        <div class="page-header">
+            <div>
+                <h1 class="page-title">Neural Chat</h1>
+                <p class="page-subtitle">24/7 access to your specialized AI learning agent.</p>
+            </div>
+        </div>
+        <div class="chat-window accent-glow">
+            <div class="chat-messages" id="chat-msgs">
+                <div class="msg msg-ai">
+                    <div style="font-size: 0.7rem; font-weight: 800; opacity: 0.7; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem;">
+                        <span>🤖</span> AI AGENT
+                    </div>
+                    Greetings! I'm your AI Mentor. How can I assist your learning journey today?
+                </div>
+            </div>
+            <div class="chat-input">
+                <input id="chat-in" placeholder="Ask anything about ${APP.currentTopic || 'AI'}..." onkeydown="if(event.key==='Enter')sendChat()">
+                <button class="btn btn-primary" onclick="sendChat()"><i class="fas fa-paper-plane"></i></button>
+            </div>
+        </div>
+    `;
 }
 
 async function sendChat() {
-    const q = document.getElementById('chat-in').value;
-    document.getElementById('chat-msgs').innerHTML += UI.chatMessage('user', q);
-    const res = await Agents.chatWithTutor(q, APP.currentTopic);
-    document.getElementById('chat-msgs').innerHTML += UI.chatMessage('ai', res.response || res.raw);
+    const input = document.getElementById('chat-in');
+    const q = input.value.trim();
+    if (!q) return;
+    
+    input.value = '';
+    const chatMsgs = document.getElementById('chat-msgs');
+    chatMsgs.innerHTML += UI.chatMessage('user', q);
+    chatMsgs.scrollTop = chatMsgs.scrollHeight;
+    
+    // Typing indicator
+    const typingId = 'typing-' + Date.now();
+    chatMsgs.innerHTML += `<div class="msg msg-ai" id="${typingId}"><i class="fas fa-spinner fa-spin"></i> Processing...</div>`;
+    chatMsgs.scrollTop = chatMsgs.scrollHeight;
+
+    try {
+        const res = await Agents.chatWithTutor(q, APP.currentTopic);
+        document.getElementById(typingId).remove();
+        chatMsgs.innerHTML += UI.chatMessage('ai', res.response || res.raw);
+    } catch (e) {
+        document.getElementById(typingId).innerHTML = '<span style="color:var(--danger)">Connection Error</span>';
+    }
+    chatMsgs.scrollTop = chatMsgs.scrollHeight;
 }
 
 function renderSettingsPage(el) {
     const s = Storage.getSettings();
     const provider = s.provider || 'huggingface';
-    el.innerHTML = `<h1 class="page-title">Settings</h1><div class="card">
-        <label>AI Provider</label>
-        <select class="form-select mt-1 mb-1" id="set-provider">
-            <option value="huggingface" ${provider === 'huggingface' ? 'selected' : ''}>HuggingFace (Free)</option>
-            <option value="deepseek" ${provider === 'deepseek' ? 'selected' : ''}>DeepSeek</option>
-            <option value="gemini" ${provider === 'gemini' ? 'selected' : ''}>Google Gemini</option>
-        </select>
-        <label>HF Token</label><input class="form-input mb-1" id="set-token" value="${s.hfToken || ''}">
-        <label>DeepSeek Key</label><input class="form-input mb-1" id="set-deepseek" value="${s.deepseekKey || ''}">
-        <label>Gemini Key</label><input class="form-input mb-1" id="set-gemini" value="${s.geminiKey || ''}">
-        <button class="btn btn-primary mt-1" onclick="saveSettings()">Save</button>
-    </div>`;
+    el.innerHTML = `
+        <h1 class="page-title">Neural Engine</h1>
+        <p class="page-subtitle">Configure your AI providers and platform preferences.</p>
+        
+        <div class="card accent-glow mt-2">
+            <div class="form-group">
+                <label class="form-label">Intelligence Provider</label>
+                <select class="form-select" id="set-provider">
+                    <option value="huggingface" ${provider === 'huggingface' ? 'selected' : ''}>HuggingFace Inference (Free)</option>
+                    <option value="gemini" ${provider === 'gemini' ? 'selected' : ''}>Google Gemini Pro</option>
+                    <option value="deepseek" ${provider === 'deepseek' ? 'selected' : ''}>DeepSeek Coder</option>
+                </select>
+            </div>
+            
+            <div class="divider"></div>
+            
+            <div class="form-group">
+                <label class="form-label">HF Inference Token (Read Only)</label>
+                <input class="form-input" id="set-token" type="password" value="${s.hfToken || ''}" placeholder="hf_...">
+            </div>
+            
+            <div class="form-group mt-1">
+                <label class="form-label">Gemini API Key</label>
+                <input class="form-input" id="set-gemini" type="password" value="${s.geminiKey || ''}" placeholder="AIza...">
+            </div>
+
+            <div class="form-group mt-1">
+                <label class="form-label">DeepSeek API Key</label>
+                <input class="form-input" id="set-deepseek" type="password" value="${s.deepseekKey || ''}">
+            </div>
+
+            <button class="btn btn-primary mt-3" onclick="saveSettings()">SAVE CONFIGURATION <i class="fas fa-save"></i></button>
+        </div>
+    `;
 }
 
 async function saveSettings() {
@@ -298,15 +521,40 @@ async function saveSettings() {
     const dsKey = document.getElementById('set-deepseek').value;
     const geminiKey = document.getElementById('set-gemini').value;
     Storage.saveSettings({ ...Storage.getSettings(), provider, hfToken: token, deepseekKey: dsKey, geminiKey });
-    UI.toast("Saved");
+    UI.toast("Neural configuration updated successfully");
 }
 
-async function renderQuizPage(el) { el.innerHTML = "<h1>Quiz Arena</h1>"; }
-async function renderCodingPage(el) { el.innerHTML = "<h1>Code Lab</h1>"; }
-async function renderDebugPage(el) { el.innerHTML = "<h1>Debug</h1>"; }
-async function renderProjectsPage(el) { el.innerHTML = "<h1>Projects</h1>"; }
-async function renderAnalyticsPage(el) { el.innerHTML = "<h1>Analytics</h1>"; }
+async function renderQuizPage(el) { 
+    el.innerHTML = `
+        <div class="page-header">
+            <div>
+                <h1 class="page-title">Quiz Arena</h1>
+                <p class="page-subtitle">Challenge your knowledge and identify gaps.</p>
+            </div>
+        </div>
+        <div class="card accent-glow text-center" style="padding: 4rem;">
+            <div style="font-size: 4rem; margin-bottom: 1.5rem;">🏗️</div>
+            <h2>Coming Soon</h2>
+            <p style="color: var(--text-secondary);">The AI Evaluator agent is currently being optimized for high-performance assessments.</p>
+        </div>`;
+}
 
+async function renderCodingPage(el) { 
+    el.innerHTML = `
+        <div class="page-header">
+            <div>
+                <h1 class="page-title">Code Lab</h1>
+                <p class="page-subtitle">Practice with AI-integrated challenges.</p>
+            </div>
+        </div>
+        <div class="card accent-glow text-center" style="padding: 4rem;">
+            <div style="font-size: 4rem; margin-bottom: 1.5rem;">🚧</div>
+            <h2>Under Construction</h2>
+            <p style="color: var(--text-secondary);">The Interactive Sandbox is being secured for safe code execution.</p>
+        </div>`;
+}
+
+// Map globals for HTML access
 window.generateRoadmap = generateRoadmap;
 window.generateLesson = generateLesson;
 window.sendChat = sendChat;
