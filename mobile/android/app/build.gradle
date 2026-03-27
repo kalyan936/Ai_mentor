@@ -1,14 +1,21 @@
-plugins {
-    id "com.android.application"
-    id "kotlin-android"
-    id "dev.flutter.flutter-gradle-plugin"
+def localProperties = new Properties()
+def localPropertiesFile = rootProject.file('local.properties')
+if (localPropertiesFile.exists()) {
+    localPropertiesFile.withReader('UTF-8') { reader -> localProperties.load(reader) }
 }
 
+def flutterRoot = localProperties.getProperty('flutter.sdk')
+if (flutterRoot == null) {
+    throw new GradleException("flutter.sdk not set in local.properties")
+}
+
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
+
 android {
-    namespace = "com.example.mobile"
-    testNamespace = "com.example.mobile.test"
-    compileSdk = flutter.compileSdkVersion
-    ndkVersion = flutter.ndkVersion
+    namespace 'com.example.mobile'
+    compileSdkVersion 33
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
@@ -24,11 +31,11 @@ android {
     }
 
     defaultConfig {
-        applicationId = "com.example.mobile"
-        minSdkVersion = flutter.minSdkVersion
-        targetSdkVersion = flutter.targetSdkVersion
-        versionCode = flutter.versionCode
-        versionName = flutter.versionName
+        applicationId 'com.example.mobile'
+        minSdkVersion 21
+        targetSdkVersion 33
+        versionCode 1
+        versionName '1.0.0'
     }
 
     buildTypes {
@@ -36,10 +43,6 @@ android {
             signingConfig = signingConfigs.debug
         }
     }
-}
-
-flutter {
-    source = '../..'
 }
 
 dependencies {
