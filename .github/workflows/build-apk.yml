@@ -11,32 +11,27 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # Checkout source code
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      # Set up Java (required for Android builds)
       - name: Set up Java
         uses: actions/setup-java@v3
         with:
           distribution: 'zulu'
           java-version: '17'
 
-      # Set up Flutter
       - name: Set up Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: 'latest'
+          flutter-version: '3.19.6'   # latest stable release now
           channel: 'stable'
 
-      # Build APK
       - name: Build APK for AI Mentor
         run: |
           cd mobile
           flutter pub get
           flutter build apk --release
 
-      # Upload APK artifact
       - name: Upload APK Artifact
         uses: actions/upload-artifact@v4
         with:
